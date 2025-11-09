@@ -31,7 +31,9 @@ const AddContact = () => {
                 body: JSON.stringify(payload),
                 headers: { "Content-Type": "application/json" }
             })
-            if(!respons)
+            if(!response.ok){
+                throw new Error("crearContacto no ok")
+            }
         } catch (error) {
             console.error(error)
         }
