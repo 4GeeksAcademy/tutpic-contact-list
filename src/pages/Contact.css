@@ -1,0 +1,7 @@
+#userManager{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: whitesmoke;
+    height: 20vh;
+}

@@ -1,7 +1,7 @@
 export const Footer = () => (
-	<footer className="footer mt-auto py-3 text-center">
+	<footer className="footer py-3 mt-3 text-center " style={{backgroundColor:"whitesmoke"}}>
 		<p>
-			Check the <a target="_blank" href="https://4geeks.com/docs/start/start-react-advanced">template documentation</a> <i className="fa-solid fa-file"></i> for help.
+			Página creada por Tutpic :^)
 		</p>
 		<p>
 			Made with <i className="fa fa-heart text-danger" /> by{" "}
