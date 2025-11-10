@@ -1,57 +1,43 @@
+import { useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import useGlobalReducer from "../hooks/useGlobalReducer"
 
-const AddContact = () => {
+const EditContact = () => {
 
-    const navigate = useNavigate()
     const {store,dispatch} = useGlobalReducer()
+    const navigate = useNavigate()
+    const {name,id} = useParams() 
 
-    // VARIABLE QUE GUARDA LOS DATOS INGRESADOS EN EL FORM
-
-    const [data, setData] = useState({
-        name: "",
-        address: "",
-        phone: "",
-        email: ""
-    })
-
-    //FUNCION QUE EVITA EL REFRESH DE LA PAGINA AL HACER SUBMIT AL FORM
+    const [data,setData] = useState(store.contactList.find(ele=>ele.id == id))
+    const [ogData, setOgData] = useState(data)
 
     const submitHandler = (e) => {
         e.preventDefault()
-        crearContacto()
+        editar()
     }
 
-    // FUNCION QUE CREA EL CONTACTO
-
-    const crearContacto = async () =>{
+    const editar = async () => {
         try {
-            if(data.name==""){
-                alert("Ingrese un nombre de contacto")
+            if(data == ogData){
+                alert("No se ha realizado ningun cambio")
                 return
             }
-            if(store.currentUser.slug==""){
-                alert("Error, no hay usuario seleccionado")
-                navigate("/")
-            }
-            let response = await fetch(`https://playground.4geeks.com/contact/agendas/${store.currentUser.slug}/contacts`,{
-                method:"POST",
-                body: JSON.stringify(data),
+            let response = await fetch(`https://playground.4geeks.com/contact/agendas/${name}/contacts/${id}`,{
+                method:"PUT",
+                body:JSON.stringify(data),
                 headers: { "Content-Type": "application/json" }
             })
             if(!response.ok){
-                throw new Error("crearContacto no ok")
+                throw new Error("editar no ok")
             }
             let result = await response.json()
-            navigate(-1)
+            navigate("/")
         } catch (error) {
             console.error(error)
         }
     }
 
-
-    return (
+    return(
         <div className="d-flex justify-content-center flex-column m-5">
             <h1>Ingrese informacion de contacto</h1>
             <form onSubmit={submitHandler} className="d-flex flex-column border border-secondary p-2">
@@ -75,10 +61,11 @@ const AddContact = () => {
                 <input type="text" value={data.address} id="emailI" className="form-control" onChange={(e) => setData(prev => {
                     return { ...prev, address: e.target.value }
                 })} />
-                <button type="submit" className="btn btn-success my-2" style={{maxWidth:"max-content"}}>Agregar Contacto</button>
+                <button type="submit" className="btn btn-success my-2" style={{maxWidth:"max-content"}}>Guardar Cambios</button>
             </form>
             <button className="btn btn-danger my-2" onClick={()=>navigate(-1)} style={{maxWidth:"max-content"}}>Cancelar</button>
         </div>
     )
 }
-export default AddContact
+
+export default EditContact

@@ -37,6 +37,10 @@ const Contact = () => {
                 type: "set-current-user",
                 payload: { slug: "", id: null }
             })
+            dispatch({
+                type:"set-contact-list",
+                payload:[]
+            })
         } catch (error) {
             alert("No se pudo borrar el usuario")
             console.log(error)
@@ -126,7 +130,7 @@ const Contact = () => {
             {store.contactList.length > 0 && store.contactList.map((ele) => {
                 return <User key={ele.id} data={ele} />
             })}
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center m-2">
             {store.currentUser.slug && <button className="btn btn-success" onClick={()=>navigate("/add")}>Añadir nuevo contacto</button>}
             </div>
         </div>
